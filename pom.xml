@@ -10,17 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>designPattern</module>
-        <module>spirng</module>
-        <module>springMVC</module>
-        <module>springBoot</module>
-        <module>mybatis</module>
-        <module>mysql</module>
-        <module>bootstrap</module>
-        <module>JavaScript</module>
-        <module>es</module>
-        <module>nginx</module>
-        <module>dubbo</module>
-        <module>mq</module>
+        <module>spring</module>
     </modules>
 
     <properties>
