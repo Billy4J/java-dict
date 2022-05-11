@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--引入配置文件名称空间-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--对象创建，基于set方法注入属性-->
+    <bean id="userDao" class="com.afterAll.dao.UserDao">
+        <property name="id" value="0"/>
+        <property name="name" value="user-1"/>
+    </bean>
+
+    <!--对象创建，基于有参构造注入属性-->
+    <bean id="orderDao" class="com.afterAll.dao.OrderDao">
+        <constructor-arg name="id" value="1111"/>
+        <constructor-arg name="name" value="order-1"/>
+    </bean>
+
+    <!--使用配置文件进行赋值-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${prop.driverClass}"/>
+        <property name="url" value="${prop.url}"/>
+        <property name="username" value="${prop.username}"/>
+        <property name="password" value="${prop.password}"/>
+    </bean>
+
+    <!--使用p名称空间，简化属性注入-->
+    <bean name="goodDao" class="com.afterAll.dao.GoodDao" p:id="1" p:name="good-1"/>
+
+    <bean name="favorites" class="com.afterAll.dao.FavoritesDao">
+        <!--注入null字面量-->
+        <property name="nullTest">
+            <null/>
+        </property>
+        <!--注入带有特殊符号的字面量，除了html转义，还有以下写法 <![CDATA[...]]> -->
+        <property name="name">
+            <value><![CDATA[<<EVA>>]]></value>
+        </property>
+        <!--注入属性，外部bean-->
+        <property name="userDao" ref="userDao"/>
+        <!--注入属性，内部bean，同时用于级联赋值-->
+        <property name="innerUserDao">
+            <bean class="com.afterAll.dao.UserDao">
+                <property name="id" value="123"/>
+                <property name="name" value="inner"/>
+            </bean>
+        </property>
+        <!--级联赋值，需要属性具有get，set方法-->
+        <property name="cascadeInjection" ref="cascadeInjection"/>
+        <property name="cascadeInjection.name" value="级联赋值成功"/>
+        <!--注入集合对象-->
+        <property name="set">
+            <set>
+                <value>set1</value>
+                <value>set2</value>
+                <value>set2</value>
+            </set>
+        </property>
+        <property name="list">
+            <list>
+                <value>list1</value>
+                <value>list2</value>
+                <value>list2</value>
+            </list>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="1" value="v1"/>
+                <entry key="2" value="v2"/>
+                <entry key="1" value="v3"/>
+            </map>
+        </property>
+        <property name="arr">
+            <array>
+                <value>arr1</value>
+                <value>arr2</value>
+                <value>arr1</value>
+            </array>
+        </property>
+    </bean>
+
+    <!--级联赋值，使用外部bean形式-->
+    <bean name="cascadeInjection" class="com.afterAll.dao.UserDao" p:id="3" p:name="级联赋值"/>
+
+    <!--使用util名称空间，抽取集合对象-->
+    <util:list id="utilList">
+        <value>list1</value>
+        <value>list2</value>
+        <value>list1</value>
+    </util:list>
+
+    <!--使用集合对象注入属性-->
+    <bean name="favorites2" class="com.afterAll.dao.FavoritesDao">
+        <property name="list" ref="utilList"/>
+    </bean>
+
+    <!--使用FactoryBean, 在配置文件定义bean类型可以和返回类型不一样-->
+    <bean name="factoryBean" class="com.afterAll.ioc.FactoryBeanDemo"/>
+
+    <!--bean作用域,单例或多例-->
+    <bean name="singleton" class="com.afterAll.dao.GoodDao" scope="singleton">
+        <property name="name" value="singleton"/>
+    </bean>
+    <bean name="prototype" class="com.afterAll.dao.GoodDao" scope="prototype">
+        <property name="name" value="singleton"/>
+    </bean>
+
+    <!--bean的生命周期-->
+    <bean name="beanLifecycle" class="com.afterAll.dao.GoodDao" init-method="initMethod" destroy-method="destroyMethod">
+        <property name="name" value="bean life cycle"/>
+    </bean>
+
+    <!--bean后置处理器，配置后会在每个bean初始化时生效-->
+    <!--    <bean name="myBeanPost" class="com.afterAll.ioc.MyBeanPost"/>-->
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+</beans>
