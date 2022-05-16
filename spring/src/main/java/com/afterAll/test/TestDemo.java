@@ -1,8 +1,11 @@
 package com.afterAll.test;
 
+import com.afterAll.aop.AspectJWithAnnotationDemo;
 import com.afterAll.dao.GoodDao;
+import com.afterAll.dao.UserDao;
 import com.afterAll.ioc.AnnotationDemo;
 import com.afterAll.ioc.SpringConfig;
+import com.afterAll.service.UserServiceImpl;
 import com.alibaba.druid.pool.DruidDataSource;
 import lombok.Data;
 import org.junit.Test;
@@ -62,6 +65,36 @@ public class TestDemo {
         ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
         AnnotationDemo annotationDemo = context.getBean("annotationDemo", AnnotationDemo.class);
         System.out.println();
+    }
+
+    /**
+     * 测试AOP框架基于xml开发
+     */
+    @Test
+    public void testAspectJ() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:bean_aop.xml");
+        UserDao userDao = context.getBean("userDao", UserDao.class);
+        userDao.add();
+    }
+
+    /**
+     * 测试AOP框架基于注解开发
+     */
+    @Test
+    public void testAspectJOnlyAnnotation() {
+        ApplicationContext context = new AnnotationConfigApplicationContext(AspectJWithAnnotationDemo.class);
+        UserDao userDao = context.getBean("userDao", UserDao.class);
+        userDao.add();
+    }
+
+    /**
+     * aspectJ配置文件，进行AOP操作
+     */
+    @Test
+    public void testAspectJXmlOperation() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:aspectJ.xml");
+        UserDao userServiceImpl = context.getBean("userDao", UserDao.class);
+        userServiceImpl.add();
     }
 
     /**

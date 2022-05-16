@@ -10,4 +10,8 @@ public class UserDao {
     @Value(value = "1")
     private int id;
     private String name;
+
+    public void add() {
+        System.out.println("方法执行...");
+    }
 }

@@ -1,9 +1,6 @@
 package com.afterAll.dao;
 
 import lombok.Data;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 @Data
 public class GoodDao {
