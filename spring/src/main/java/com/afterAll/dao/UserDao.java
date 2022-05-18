@@ -1,17 +1,25 @@
 package com.afterAll.dao;
 
+import com.afterAll.entity.User;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
-@Component(value = "userDao")
+@Repository
 @Data
 public class UserDao {
-    @Value(value = "1")
-    private int id;
-    private String name;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     public void add() {
         System.out.println("方法执行...");
+    }
+
+    public void addUser(User user) {
+        String insertSql = "insert into t_user value(?,?,?)";
+        Object[] args = {user.getId(), user.getName(),user.getBirthday()};
+        int res = jdbcTemplate.update(insertSql, args);
+        System.out.println(res);
     }
 }

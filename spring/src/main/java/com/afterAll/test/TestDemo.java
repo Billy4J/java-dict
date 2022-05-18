@@ -2,9 +2,15 @@ package com.afterAll.test;
 
 import com.afterAll.aop.AspectJWithAnnotationDemo;
 import com.afterAll.dao.GoodDao;
+import com.afterAll.dao.OrderDao;
 import com.afterAll.dao.UserDao;
+import com.afterAll.entity.Good;
+import com.afterAll.entity.Order;
 import com.afterAll.ioc.AnnotationDemo;
 import com.afterAll.ioc.SpringConfig;
+import com.afterAll.jdbc.SpringConfigJdbc;
+import com.afterAll.service.GoodService;
+import com.afterAll.service.OrderServiceImpl;
 import com.afterAll.service.UserServiceImpl;
 import com.alibaba.druid.pool.DruidDataSource;
 import lombok.Data;
@@ -16,6 +22,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -28,7 +35,7 @@ public class TestDemo {
     @Test
     public void testFactoryBean() {
         ApplicationContext context = new ClassPathXmlApplicationContext("classpath:bean_no_annotation.xml");
-        GoodDao factoryBean = context.getBean("factoryBean", GoodDao.class);
+        Good factoryBean = context.getBean("factoryBean", Good.class);
         System.out.println(factoryBean.getName());
     }
 
@@ -54,7 +61,7 @@ public class TestDemo {
     public void testAnnotation() {
         ApplicationContext context = new ClassPathXmlApplicationContext("classpath:bean_with_annotation.xml");
         AnnotationDemo annotationDemo = context.getBean("annotationDemo", AnnotationDemo.class);
-        System.out.println();
+        System.out.println(annotationDemo.getUserDao());
     }
 
     /**
@@ -64,7 +71,7 @@ public class TestDemo {
     public void testOnlyAnnotation() {
         ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
         AnnotationDemo annotationDemo = context.getBean("annotationDemo", AnnotationDemo.class);
-        System.out.println();
+        System.out.println(annotationDemo.getUserDao());
     }
 
     /**
@@ -93,8 +100,8 @@ public class TestDemo {
     @Test
     public void testAspectJXmlOperation() {
         ApplicationContext context = new ClassPathXmlApplicationContext("classpath:aspectJ.xml");
-        UserDao userServiceImpl = context.getBean("userDao", UserDao.class);
-        userServiceImpl.add();
+        UserDao userDao = context.getBean("userDao", UserDao.class);
+        userDao.add();
     }
 
     /**
@@ -112,4 +119,60 @@ public class TestDemo {
         List<Object> query = jdbcTemplate.query("select * from t_user where id=1", new BeanPropertyRowMapper<>(Object.class));
         System.out.println(query);
     }
+
+    /**
+     * JDBC框架基于xml操作
+     */
+    @Test
+    public void testJdbcWithXml() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:jdbcTemplate.xml");
+        OrderDao orderDao = context.getBean("orderDao", OrderDao.class);
+        Order order = new Order(4, "第四个");
+//        orderDao.add(order);
+//        order.setName("测试更新操作");
+//        orderDao.update(order);
+//        orderDao.delete(order);
+//        orderDao.findOrderInfo(4);
+//        orderDao.findAllOrder();
+        List<Order> orders = new ArrayList<>();
+        orders.add(new Order(55, "555---"));
+        orders.add(new Order(66, "666---"));
+        orders.add(new Order(77, "777---"));
+//        orderDao.batchAddOrderObj(orders);
+//        orderDao.batchUpdateOrderObj(orders);
+//        orderDao.batchDeleteOrderObj(orders);
+    }
+
+    /**
+     * 测试事务操作
+     */
+    @Test
+    public void testTransaction() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:jdbcTemplate.xml");
+        OrderServiceImpl orderServiceImpl = context.getBean("orderServiceImpl", OrderServiceImpl.class);
+        orderServiceImpl.transactionalTest();
+    }
+
+    /**
+     * 基于xml声明式事务管理
+     */
+    @Test
+    public void testTransactionWithXml() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:transactionalInXml.xml");
+        UserServiceImpl userServiceImpl = context.getBean("userServiceImpl", UserServiceImpl.class);
+        userServiceImpl.addUser();
+    }
+
+
+    /**
+     * 完全基于注解声明式进行事务管理
+     */
+    @Test
+    public void testTransactionalOnlyAnnotation() {
+        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfigJdbc.class);
+        GoodService goodService = context.getBean("goodService", GoodService.class);
+        goodService.add();
+        System.out.println();
+    }
+
 }

@@ -1,7 +1,7 @@
 package com.afterAll.ioc;
 
-import com.afterAll.dao.FavoritesDao;
-import com.afterAll.dao.UserDao;
+import com.afterAll.entity.Favorites;
+import com.afterAll.entity.User;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -11,9 +11,9 @@ public class XmlBean {
     @Test
     public void test() {
         ApplicationContext context = new ClassPathXmlApplicationContext("bean_no_annotation.xml");
-        UserDao userDao = context.getBean("userDao", UserDao.class);
-        System.out.println(userDao);
-        FavoritesDao favorites = context.getBean("favorites", FavoritesDao.class);
+        User user = context.getBean("userDao", User.class);
+        System.out.println(user);
+        Favorites favorites = context.getBean("favorites", Favorites.class);
         System.out.println(favorites);
     }
 }

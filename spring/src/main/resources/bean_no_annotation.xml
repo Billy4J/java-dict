@@ -12,29 +12,21 @@
     <context:property-placeholder location="classpath:jdbc.properties"/>
 
     <!--对象创建，基于set方法注入属性-->
-    <bean id="userDao" class="com.afterAll.dao.UserDao">
+    <bean id="user" class="com.afterAll.entity.User">
         <property name="id" value="0"/>
         <property name="name" value="user-1"/>
     </bean>
 
     <!--对象创建，基于有参构造注入属性-->
-    <bean id="orderDao" class="com.afterAll.dao.OrderDao">
+    <bean id="orderDao" class="com.afterAll.entity.Order">
         <constructor-arg name="id" value="1111"/>
         <constructor-arg name="name" value="order-1"/>
     </bean>
 
-    <!--使用配置文件进行赋值-->
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
-        <property name="driverClassName" value="${prop.driverClass}"/>
-        <property name="url" value="${prop.url}"/>
-        <property name="username" value="${prop.username}"/>
-        <property name="password" value="${prop.password}"/>
-    </bean>
-
     <!--使用p名称空间，简化属性注入-->
-    <bean name="goodDao" class="com.afterAll.dao.GoodDao" p:id="1" p:name="good-1"/>
+    <bean name="good" class="com.afterAll.entity.Good" p:id="1" p:name="good-1"/>
 
-    <bean name="favorites" class="com.afterAll.dao.FavoritesDao">
+    <bean name="favorites" class="com.afterAll.entity.Favorites">
         <!--注入null字面量-->
         <property name="nullTest">
             <null/>
@@ -44,10 +36,10 @@
             <value><![CDATA[<<EVA>>]]></value>
         </property>
         <!--注入属性，外部bean-->
-        <property name="userDao" ref="userDao"/>
+        <property name="user" ref="user"/>
         <!--注入属性，内部bean，同时用于级联赋值-->
-        <property name="innerUserDao">
-            <bean class="com.afterAll.dao.UserDao">
+        <property name="innerUser">
+            <bean class="com.afterAll.entity.User">
                 <property name="id" value="123"/>
                 <property name="name" value="inner"/>
             </bean>
@@ -87,7 +79,7 @@
     </bean>
 
     <!--级联赋值，使用外部bean形式-->
-    <bean name="cascadeInjection" class="com.afterAll.dao.UserDao" p:id="3" p:name="级联赋值"/>
+    <bean name="cascadeInjection" class="com.afterAll.entity.User" p:id="3" p:name="级联赋值"/>
 
     <!--使用util名称空间，抽取集合对象-->
     <util:list id="utilList">
@@ -97,7 +89,7 @@
     </util:list>
 
     <!--使用集合对象注入属性-->
-    <bean name="favorites2" class="com.afterAll.dao.FavoritesDao">
+    <bean name="favorites2" class="com.afterAll.entity.Favorites">
         <property name="list" ref="utilList"/>
     </bean>
 
@@ -105,10 +97,10 @@
     <bean name="factoryBean" class="com.afterAll.ioc.FactoryBeanDemo"/>
 
     <!--bean作用域,单例或多例-->
-    <bean name="singleton" class="com.afterAll.dao.GoodDao" scope="singleton">
+    <bean name="singleton" class="com.afterAll.entity.Good" scope="singleton">
         <property name="name" value="singleton"/>
     </bean>
-    <bean name="prototype" class="com.afterAll.dao.GoodDao" scope="prototype">
+    <bean name="prototype" class="com.afterAll.entity.Good" scope="prototype">
         <property name="name" value="singleton"/>
     </bean>
 
@@ -117,11 +109,7 @@
         <property name="name" value="bean life cycle"/>
     </bean>
 
-    <!--bean后置处理器，配置后会在每个bean初始化时生效-->
-    <!--    <bean name="myBeanPost" class="com.afterAll.ioc.MyBeanPost"/>-->
-
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
+    <!--bean后置处理器，配置后会在每个bean初始化时生效，开放注释后会每个类创建都执行打印-->
+    <!--        <bean name="myBeanPost" class="com.afterAll.ioc.MyBeanPost"/>-->
 
 </beans>

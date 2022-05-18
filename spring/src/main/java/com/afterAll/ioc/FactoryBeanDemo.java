@@ -1,14 +1,14 @@
 package com.afterAll.ioc;
 
-import com.afterAll.dao.GoodDao;
+import com.afterAll.entity.Good;
 import org.springframework.beans.factory.FactoryBean;
 
-public class FactoryBeanDemo implements FactoryBean<GoodDao> {
+public class FactoryBeanDemo implements FactoryBean<Good> {
     @Override
-    public GoodDao getObject() {
-        GoodDao goodDao = new GoodDao();
-        goodDao.setName("factoryBeanTest-GoodDao");
-        return goodDao;
+    public Good getObject() {
+        Good good = new Good();
+        good.setName("factoryBeanTest-Good");
+        return good;
     }
 
     @Override
