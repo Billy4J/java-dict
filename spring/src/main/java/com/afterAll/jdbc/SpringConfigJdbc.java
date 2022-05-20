@@ -42,7 +42,7 @@ public class SpringConfigJdbc {
         return dataSource;
     }
 
-    @Bean
+    @Bean(value = "transactionManagerAnnotation")
     public DataSourceTransactionManager getTransactionManager(DruidDataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }

@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(
 //        value = "",
-//        transactionManager = "transactionManager"
+        transactionManager = "transactionManager"//存在多个事务管理器的时候需要指明
 //        , label = ""
 //        , propagation = Propagation.REQUIRED
 //        , isolation = Isolation.DEFAULT
