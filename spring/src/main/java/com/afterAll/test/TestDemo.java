@@ -6,6 +6,7 @@ import com.afterAll.dao.OrderDao;
 import com.afterAll.dao.UserDao;
 import com.afterAll.entity.Good;
 import com.afterAll.entity.Order;
+import com.afterAll.entity.User;
 import com.afterAll.ioc.AnnotationDemo;
 import com.afterAll.ioc.SpringConfig;
 import com.afterAll.jdbc.SpringConfigJdbc;
@@ -22,6 +23,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -141,6 +143,16 @@ public class TestDemo {
 //        orderDao.batchAddOrderObj(orders);
 //        orderDao.batchUpdateOrderObj(orders);
 //        orderDao.batchDeleteOrderObj(orders);
+    }
+
+    /**
+     * 测试日期格式的存取
+     */
+    @Test
+    public void testAddUser() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:jdbcTemplate.xml");
+        UserDao userDao = context.getBean("userDao", UserDao.class);
+        userDao.addUser(new User(20, "ADD", Date.valueOf("2022-5-5")));
     }
 
     /**
