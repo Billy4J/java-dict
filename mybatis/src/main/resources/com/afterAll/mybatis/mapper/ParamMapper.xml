@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.afterAll.mybatis.mapper.ParamMapper">
+
+    <select id="getUserOne" resultType="User">
+        select *
+        from t_user
+        where id = #{id}
+    </select>
+
+    <select id="getUserTwo" resultType="User">
+        select *
+        from t_user
+        where id = #{param1}
+    </select>
+
+    <select id="getUserMap" resultType="User">
+        select *
+        from t_user
+        where id = #{id}
+    </select>
+
+    <select id="getUserObject" resultType="User">
+        select *
+        from t_user
+        where id = #{id}
+    </select>
+
+    <select id="getUserParam" resultType="User">
+        select *
+        from t_user
+        where id = #{paramName}
+    </select>
+
+</mapper>
+
+

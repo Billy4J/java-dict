@@ -4,14 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>com.afterAll</groupId>
     <artifactId>javaDemo</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>designPattern</module>
         <module>spring</module>
+        <module>SpringWebFlux</module>
         <module>springMVC</module>
+        <module>mybatis</module>
     </modules>
 
     <properties>
