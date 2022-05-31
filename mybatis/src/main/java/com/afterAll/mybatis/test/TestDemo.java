@@ -1,6 +1,7 @@
 package com.afterAll.mybatis.test;
 
 import com.afterAll.mybatis.entity.User;
+import com.afterAll.mybatis.mapper.CacheMapper;
 import com.afterAll.mybatis.mapper.DynamicSqlMapper;
 import com.afterAll.mybatis.mapper.ResultMapper;
 import com.afterAll.mybatis.mapper.UserMapper;
@@ -32,9 +33,11 @@ public class TestDemo {
 
         //        开启自动提交创建SqlSession对象
         SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        SqlSession sqlSession2 = sqlSessionFactory.openSession(true);
 
         //        通过代理模式创建爱你UserMapper接口的代理实现类对象
-        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        CacheMapper cacheMapper = sqlSession.getMapper(CacheMapper.class);
+        CacheMapper cacheMapper2 = sqlSession2.getMapper(CacheMapper.class);
 
         //        调用UserMapper接口中的方法，就可以根据UserMapper的全类名匹配元素文件，通过调用的方法名匹配映射文件中的SQL标签，并执行sql语句
 
@@ -43,6 +46,9 @@ public class TestDemo {
         users.add(new User(10032, "b", null));
         users.add(new User(10030, "c", null));
 
-        System.out.println(sqlSession.getMapper(DynamicSqlMapper.class).deleteUsers(users));
+        System.out.println(cacheMapper.getUserById(1));
+        sqlSession.commit();
+        System.out.println(cacheMapper.getUserById(1));
+//        System.out.println(cacheMapper2.getUserById(1));
     }
 }

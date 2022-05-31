@@ -14,6 +14,7 @@
         <module>SpringWebFlux</module>
         <module>springMVC</module>
         <module>mybatis</module>
+        <module>mybatis-MBG</module>
     </modules>
 
     <properties>
