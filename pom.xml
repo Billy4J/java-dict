@@ -15,6 +15,9 @@
         <module>springMVC</module>
         <module>mybatis</module>
         <module>mybatis-MBG</module>
+        <module>projects</module>
+        <module>projects/spring_warehouse_management_system</module>
+        <module>projects/boot_warehouse_management_system</module>
     </modules>
 
     <properties>
