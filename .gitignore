@@ -3,7 +3,6 @@
 
 # IntelliJ project files
 .idea
-*.iml
 out
 gen
 
@@ -23,7 +22,6 @@ buildNumber.properties
 
 ## File-based project format:
 *.iws
-*.iml
 *.ipr
 
 ## Plugin-specific files:
